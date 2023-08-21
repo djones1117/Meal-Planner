@@ -1,3 +1,4 @@
+from .models import ShoppingList, Meal, Ingredient
 
 # Create your views here.
 from django.shortcuts import render
