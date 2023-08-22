@@ -13,15 +13,20 @@
   </head>
   <body>
     <header class="navbar-fixed">
-      <nav>
-        <div class="nav-wrapper blue">
-          <ul>
-            <li>
-              <a href="/" class="left brand-logo">&nbsp;&nbsp;Meal Planner</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+        <nav>
+            <div class="nav-wrapper teal darken-2">
+                <ul>
+                    <li><a href="{% url 'home' %}" class="left brand-logo">&nbsp;&nbsp;Meal Planner</a></li>
+                </ul>
+                <ul class="right">
+                    <!-- changes below -->
+                   
+                    <li><a href="{% url 'meals_create' %}">Add a Meal</a></li>
+                    <li><a href="{% url 'index' %}">View All Recipes</a></li>
+                    
+                </ul>
+            </div>
+        </nav>
     </header>
     <main class="container">{% block content %} {% endblock %}</main>
   </body>

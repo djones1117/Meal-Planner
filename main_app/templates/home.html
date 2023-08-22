@@ -1,5 +1,11 @@
 {% extends 'base.html' %} {% block content %}
-
-<h1>Home page</h1>
-
-{% endblock %}
+<h1>Meals</h1>
+{% for meal in meals %}
+<a href="{% url 'home' %}">
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title">{{ meal.name }}</span>
+    </div>
+  </div>
+</a>
+{% endfor %} {% endblock %}
