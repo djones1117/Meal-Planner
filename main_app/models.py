@@ -12,11 +12,10 @@ class ShoppingList(models.Model):
 
 class Meal(models.Model):
     name = models.CharField(max_length=100)
-    picture = models.CharField(max_length=200)
+    picture = models.FileField(blank=True, null=False)
+    ingredients = models.TextField(max_length=500)
     #user = models.ForeignKey(User, on_delete=models.CASCADE)
     
-class Ingredient(models.Model):
-    item = models.CharField(max_length=100)
-    meal = models.ForeignKey(Meal, on_delete=models.CASCADE)
+
     
 

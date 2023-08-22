@@ -8,8 +8,8 @@
     {% csrf_token %}
 
     <table>
-        {{ form }}
-        {{ formset }}
+        {{ form.as_table }}
+        
     </table>
 
     <button>Add</button>
