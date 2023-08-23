@@ -78,6 +78,11 @@ def add_photo(request, meal_id):
             print(e)
   return redirect('detail', meal_id=meal_id)
 
+def meals_delete(request, meal_id):
+   meal = Meal.objects.get(id=meal_id)
+   meal.delete()
+   return redirect('index')
+
 class MealCreate(CreateView):
   model = Meal
   fields = ['name', 'ingredients']
