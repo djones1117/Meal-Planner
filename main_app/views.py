@@ -67,7 +67,7 @@ def add_photo(request, meal_id):
         key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
         # just in case something goes wrong
         try:
-            bucket = os.environ['S3_BUCKET']
+            bucket = os.environ['BUCKET_NAME']
             s3.upload_fileobj(photo_file, bucket, key)
             # build the full url string
             url = f"{os.environ['S3_BASE_URL']}{bucket}/{key}"
