@@ -8,4 +8,5 @@ urlpatterns = [
   path('meals/<int:meal_id>/', views.meals_detail, name='detail'),
   path('meals/create/', views.MealCreate.as_view(), name='meals_create'),
   #path('',),
+   path('accounts/signup/', views.signup, name='signup'),
 ]

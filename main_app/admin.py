@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from .models import ShoppingList, Meal
 # Register your models here.
