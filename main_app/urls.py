@@ -8,6 +8,5 @@ urlpatterns = [
   path('meals/<int:meal_id>/', views.meals_detail, name='detail'),
   path('meals/<int:meal_id>/add_photo/', views.add_photo, name='add_photo'),
   path('meals/create/', views.MealCreate.as_view(), name='meals_create'),
-
-
+  path('accounts/signup/', views.signup, name='signup'),
 ]

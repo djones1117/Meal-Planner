@@ -122,7 +122,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Add this variable to specify where successful logins should redirect to
+LOGIN_REDIRECT_URL = '/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+LOGOUT_REDIRECT_URL = 'login'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
