@@ -4,5 +4,5 @@ from .models import  Meal
 class MealForm(ModelForm):
     class Meta:
         model = Meal
-        fields = ['name', 'picture']
+        fields = ['name']
 
