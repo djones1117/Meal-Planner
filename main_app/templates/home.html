@@ -6,7 +6,7 @@
 <div class="card">
   <div class="card-image waves-effect waves-block waves-light">
     {% for meal in meals %}
-    {% if meal.photo_set.all %}
+  
     <img class="activator" src="{{ meal.photo_set.first.url }}">
     </div>
   <div class="card-content">
@@ -19,8 +19,8 @@
     <p>{{meal.ingredients}}</p>
    
   </div>
-  {% endif %}
 </div>
 {% endfor %}
-
+</div>
+</div>
 {% endblock %}
