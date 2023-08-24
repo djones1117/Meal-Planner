@@ -11,6 +11,8 @@ from django.shortcuts import render, redirect
 
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
@@ -39,22 +41,25 @@ def signup(request):
 
 
 # Define the home view
+@login_required
 def home(request):
   meals = Meal.objects.all()
   return render(request, 'home.html', {
     'meals': meals
   })
 
+@login_required
 def shopping_list(request):
   return render(request, 'shopping_list.html')
 
+@login_required
 def meals_index(request):
   meals = Meal.objects.all()
   return render(request, 'meals/index.html', {
      'meals': meals
   }) 
   
-
+@login_required
 def meals_detail(request, meal_id):
   meal = Meal.objects.get(id=meal_id)
   return render(request, 'meals/detail.html', { 'meal' : meal })
@@ -83,7 +88,7 @@ def meals_delete(request, meal_id):
    meal.delete()
    return redirect('index')
 
-class MealCreate(CreateView):
+class MealCreate(LoginRequiredMixin, CreateView):
   model = Meal
   fields = ['name', 'ingredients']
 
@@ -91,7 +96,7 @@ class MealCreate(CreateView):
      form.instance.user = self.request.user
      return super().form_valid(form)
   
-class MealDelete(DeleteView):
+class MealDelete(LoginRequiredMixin, DeleteView):
   model = Meal
   success_url = '/meals'
 
