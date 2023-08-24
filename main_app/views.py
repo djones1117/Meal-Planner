@@ -86,8 +86,11 @@ def meals_delete(request, meal_id):
 class MealCreate(CreateView):
   model = Meal
   fields = ['name', 'ingredients']
-  success_url = '/'
 
+  def form_valid(self, form):
+     form.instance.user = self.request.user
+     return super().form_valid(form)
+  
 class MealDelete(DeleteView):
   model = Meal
   success_url = '/meals'

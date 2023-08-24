@@ -15,10 +15,12 @@
         <div class="card-panel teal-text center-align">No Photos Uploaded</div>
         {% endfor %}
 
+        {% if user == meal.user_id %}
         <form action="{% url 'delete' meal.id %}" method="POST">
           {% csrf_token %}
           <input type="submit" value="Delete Meal" class="btn"> 
         </form> 
+        {% endif %}
         
         <form
           action="{% url 'add_photo' meal.id %}"
