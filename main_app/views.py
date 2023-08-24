@@ -11,6 +11,8 @@ from django.shortcuts import render, redirect
 
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
@@ -39,22 +41,25 @@ def signup(request):
 
 
 # Define the home view
+@login_required
 def home(request):
   meals = Meal.objects.all()
   return render(request, 'home.html', {
     'meals': meals
   })
 
+@login_required
 def shopping_list(request):
   return render(request, 'shopping_list.html')
 
+@login_required
 def meals_index(request):
   meals = Meal.objects.all()
   return render(request, 'meals/index.html', {
      'meals': meals
   }) 
   
-
+@login_required
 def meals_detail(request, meal_id):
   meal = Meal.objects.get(id=meal_id)
   return render(request, 'meals/detail.html', { 'meal' : meal })
@@ -64,7 +69,7 @@ def add_photo(request, meal_id):
   if photo_file:
         s3 = boto3.client('s3')
         # need a unique "key" for S3 / needs image file extension too
-        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        key = 'mealplanner/' + uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
         # just in case something goes wrong
         try:
             bucket = os.environ['BUCKET_NAME']
@@ -78,12 +83,20 @@ def add_photo(request, meal_id):
             print(e)
   return redirect('detail', meal_id=meal_id)
 
-class MealCreate(CreateView):
+def meals_delete(request, meal_id):
+   meal = Meal.objects.get(id=meal_id)
+   meal.delete()
+   return redirect('index')
+
+class MealCreate(LoginRequiredMixin, CreateView):
   model = Meal
   fields = ['name', 'ingredients']
-  success_url = '/'
 
-class MealDelete(DeleteView):
+  def form_valid(self, form):
+     form.instance.user = self.request.user
+     return super().form_valid(form)
+  
+class MealDelete(LoginRequiredMixin, DeleteView):
   model = Meal
   success_url = '/meals'
 

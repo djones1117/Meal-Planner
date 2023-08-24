@@ -1,5 +1,5 @@
 from django.db import models
-#from django.urls import reverse
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 
@@ -13,7 +13,10 @@ class ShoppingList(models.Model):
 class Meal(models.Model):
     name = models.CharField(max_length=100)
     ingredients = models.TextField(max_length=500)
-    #user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'meal_id': self.id})
 
 
 class Photo(models.Model):
