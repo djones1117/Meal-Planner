@@ -10,7 +10,6 @@
         <span>Ingredients:{{meal.ingredients}}</span>
 
         <img class="responsive-img card-panel" src="{{meal.photo_url}}" />
-        <div class="card-panel teal-text center-align">No Photos Uploaded</div>
 
         {% if user.id == meal.user_id %}
         <form action="{% url 'delete' meal.id %}" method="POST">
@@ -18,8 +17,12 @@
           <input type="submit" value="Delete Meal" class="btn"> 
         </form> 
         {% endif %}
+        <br>
+        <form action="{% url 'meals_like' meal.id %}" method="POST">
+          {% csrf_token %}
+          <input type="submit" value="Like" class="btn">
+        </form>
 
-      
       </div>
       {% endblock %}
     </div>

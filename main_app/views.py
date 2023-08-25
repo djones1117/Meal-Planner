@@ -1,7 +1,7 @@
 import os
 import uuid
 import boto3
-from .models import ShoppingList, Meal
+from .models import ShoppingList, Meal, Like
 from .forms import  MealForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.forms.formsets import formset_factory
@@ -69,6 +69,10 @@ def meals_delete(request, meal_id):
    meal.delete()
    return redirect('index')
 
+def meals_like(request, meal_id):
+  Like.objects.create(user_id=request.user.id, meal_id=meal_id)
+  return redirect('detail', meal_id=meal_id)
+
 class MealCreate(LoginRequiredMixin, CreateView):
   model = Meal
   fields = ['name', 'ingredients']
@@ -96,6 +100,8 @@ class MealCreate(LoginRequiredMixin, CreateView):
 class MealDelete(LoginRequiredMixin, DeleteView):
   model = Meal
   success_url = '/meals'
+
+
 
 
 
