@@ -39,7 +39,6 @@ def signup(request):
 def landing(request):
     return render(request, "landing.html")
 
-
 @login_required
 def home(request):
     meals = Meal.objects.all()
