@@ -16,12 +16,12 @@
           {% csrf_token %}
           <input type="submit" value="Delete Meal" class="btn"> 
         </form> 
-        {% endif %}
-        <br>
+        {% else %}
         <form action="{% url 'meals_like' meal.id %}" method="POST">
           {% csrf_token %}
-          <input type="submit" value="Like" class="btn">
+          <input type="submit" value="{{ button }}" class="btn">
         </form>
+        {% endif %}
 
       </div>
       {% endblock %}
