@@ -8,14 +8,10 @@ from django.forms.formsets import formset_factory
 # Create your views here.
 from django.shortcuts import render, redirect
 
-
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-
-
 
 def signup(request):
   error_message = ''
@@ -35,10 +31,6 @@ def signup(request):
   form = UserCreationForm()
   context = {'form': form, 'error_message': error_message}
   return render(request, 'registration/signup.html', context)
-
-
-
-
 
 # Define the home view
 @login_required
@@ -62,7 +54,12 @@ def meals_index(request):
 @login_required
 def meals_detail(request, meal_id):
   meal = Meal.objects.get(id=meal_id)
-  return render(request, 'meals/detail.html', { 'meal' : meal })
+  like = Like.objects.filter(user_id=request.user.id, meal_id=meal_id)
+  if (len(like)):
+    button_msg = 'UNLIKE'
+  else:
+    button_msg = 'LIKE'
+  return render(request, 'meals/detail.html', { 'meal' : meal, 'button' : button_msg })
 
 def meals_delete(request, meal_id):
    meal = Meal.objects.get(id=meal_id)
@@ -70,7 +67,11 @@ def meals_delete(request, meal_id):
    return redirect('index')
 
 def meals_like(request, meal_id):
-  Like.objects.create(user_id=request.user.id, meal_id=meal_id)
+  like = Like.objects.filter(user_id=request.user.id, meal_id=meal_id)
+  if (len(like)):
+    like.delete()
+  else:
+    Like.objects.create(user_id=request.user.id, meal_id=meal_id)
   return redirect('detail', meal_id=meal_id)
 
 class MealCreate(LoginRequiredMixin, CreateView):
