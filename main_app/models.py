@@ -16,15 +16,10 @@ class Meal(models.Model):
     photo_url = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    def get_absolute_url(self):
-        return reverse('detail', kwargs={'meal_id': self.id})
-
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     meal = models.ForeignKey(Meal, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.user}'
-
-    
 

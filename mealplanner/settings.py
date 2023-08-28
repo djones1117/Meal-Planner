@@ -147,6 +147,6 @@ LOGIN_REDIRECT_URL = '/home'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-LOGOUT_REDIRECT_URL = 'landing'
+LOGOUT_REDIRECT_URL = '/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
