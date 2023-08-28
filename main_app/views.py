@@ -2,7 +2,6 @@ import os
 import uuid
 import boto3
 from .models import ShoppingList, Meal, Like
-from .forms import  MealForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.forms.formsets import formset_factory
 
@@ -42,43 +41,35 @@ def landing(request):
 @login_required
 def home(request):
     meals = Meal.objects.all()
+    meals = meals.order_by('-id')
+    for meal in meals:
+        meal.user_liked = Like.objects.filter(user=request.user, meal=meal).exists()
     return render(request, "home.html", {"meals": meals})
-
-
-@login_required
-def shopping_list(request):
-    return render(request, "shopping_list.html")
-
 
 @login_required
 def meals_index(request):
-    meals = Meal.objects.all()
+    meals = Meal.objects.filter(user=request.user)
+    liked_meal_ids = Like.objects.filter(user=request.user).values_list('meal_id', flat=True)
+    liked_meals = Meal.objects.filter(id__in=liked_meal_ids)
+    meals = (meals | liked_meals).order_by('-id')
+    for meal in meals:
+        meal.user_liked = Like.objects.filter(user=request.user, meal=meal).exists()
     return render(request, "meals/index.html", {"meals": meals})
-
-
-@login_required
-def meals_detail(request, meal_id):
-  meal = Meal.objects.get(id=meal_id)
-  like = Like.objects.filter(user_id=request.user.id, meal_id=meal_id)
-  if (len(like)):
-    button_msg = 'UNLIKE'
-  else:
-    button_msg = 'LIKE'
-  return render(request, 'meals/detail.html', { 'meal' : meal, 'button' : button_msg })
 
 def meals_delete(request, meal_id):
     meal = Meal.objects.get(id=meal_id)
     meal.delete()
     return redirect("index")
 
-
 def meals_like(request, meal_id):
+  referer = request.META.get('HTTP_REFERER')
   like = Like.objects.filter(user_id=request.user.id, meal_id=meal_id)
   if (len(like)):
     like.delete()
   else:
     Like.objects.create(user_id=request.user.id, meal_id=meal_id)
-  return redirect('detail', meal_id=meal_id)
+  print(referer)
+  return redirect(referer, meal_id=meal_id)
 
 class MealCreate(LoginRequiredMixin, CreateView):
     model = Meal
@@ -107,23 +98,9 @@ class MealCreate(LoginRequiredMixin, CreateView):
                 print(e)
         form.instance.user = self.request.user
         return super().form_valid(form)
-
+    success_url = '/home'
 
 class MealDelete(LoginRequiredMixin, DeleteView):
   model = Meal
   success_url = '/meals'
-
-
-
-
-
-
-  
-
-  
-
-
-  
-
-
 
