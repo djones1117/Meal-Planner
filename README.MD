@@ -43,3 +43,8 @@ Python, Django, SQL, AWS S3 Bucket
 Live app- https://mealplanner1.fly.dev/
 
 Trello- https://trello.com/b/TnRXbJoG/meal-planner
+
+Pitch Deck Included in Trello
+
+## Future Enhancements 
+ Add comments under posts
